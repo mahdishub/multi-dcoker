@@ -1,0 +1,16 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t mahdiahmed/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true mahdiahmed/react-test npm test
+
+after_success:
+  - docker build -t mahdiahmed/mulit-client ./client
+  - docker build -t mahdiahmed/multi-ngnix ./nginx
+  - docker build -t mahdiahmed/muliti-server ./server
+  - docker build -t mahdiahmed/mulit-worker ./worker
