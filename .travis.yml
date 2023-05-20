@@ -14,3 +14,9 @@ after_success:
   - docker build -t mahdiahmed/multi-ngnix ./nginx
   - docker build -t mahdiahmed/muliti-server ./server
   - docker build -t mahdiahmed/mulit-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login  -u "$DOCKER_ID" --password-stdin
+  - docker push mahdiahmed/multi-client
+  - docker push mahdiahmed/multi-nginx
+  - docker push mahdiahmed/multi-server
+  - docker push mahdiahmed/multi-worker
+
