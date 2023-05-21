@@ -1,0 +1,28 @@
+name: run-react-tests
+run-name: ${{ github.actor }} is running React tests
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2.5.0
+      -
+        name: Build test container
+        uses: docker/build-push-action@v4
+        with:
+          context: ./client
+          file: ./client/Dockerfile.dev
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/react-test:latest
+      -
+        name: Run tests
+        run: |
+          docker run -e CI=true mahdiahmed/react-test npm test
+  
